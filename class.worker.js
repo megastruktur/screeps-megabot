@@ -1,5 +1,32 @@
 class Worker {
 
+    /**
+     * Go and Harvest resource.
+     * @param {Creep} creep
+     *
+     **/
+    goAndHarvest(creep) {
+
+        if (creep.memory.harvestObjectId == undefined ||
+            creep.memory.harvestObjectId == null ||
+            creep.memory.harvestObjectId == "") {
+            var sources = creep.room.find(FIND_SOURCES);
+            var harvestSource = sources[0];
+            creep.memory.harvestObjectId = harvestSource.id;
+        }
+        else {
+            var harvestSource = Game.getObjectById(creep.memory.harvestObjectId)
+        }
+        if(creep.harvest(harvestSource) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(harvestSource, {
+                visualizePathStyle: {
+                    stroke: '#fff'
+                }
+            });
+        }
+
+    }
+
     /** @param {Creep} creep **/
     jobHarvester(creep) {
 
@@ -11,14 +38,7 @@ class Worker {
         }
 
 	    if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {
-                    visualizePathStyle: {
-                        stroke: '#fff'
-                    }
-                });
-            }
+            this.goAndHarvest(creep);
         }
         else {
             var targets = creep.room.find(FIND_STRUCTURES, {
@@ -61,10 +81,7 @@ class Worker {
             }
 	    }
 	    else {
-	        var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
+            this.goAndHarvest(creep);
 	    }
 	}
 
@@ -97,10 +114,7 @@ class Worker {
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
+            this.goAndHarvest(creep);
         }
 	}
 

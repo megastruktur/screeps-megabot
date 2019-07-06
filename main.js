@@ -1,3 +1,7 @@
+// @todo Garbage Collector for memory.
+// @todo Add automatic resource assignment.
+// @todo Add Path caching.
+
 var visualManager = require("visual.manager");
 var Worker = require("class.worker");
 var BirthController = require("birth.controller");

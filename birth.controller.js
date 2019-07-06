@@ -44,9 +44,11 @@ class BirthController {
      */
     spawn(spawnClass, spawn) {
 
+        // Memory[spawnClass].birthAmount = Memory.birthAmount;
         // Set some defaults.
-        if (!Memory[spawnClass].birthAmount) {
-            Memory[spawnClass].birthAmount = Memory[spawnClass].birthAmount;
+        if (Memory[spawnClass] == undefined) {
+            Memory[spawnClass] = {};
+            Memory[spawnClass].birthAmount = 0;
         }
 
         // Pre-assign citizen memory.
@@ -54,7 +56,7 @@ class BirthController {
         var currentCitizenNumber = Memory[spawnClass].birthAmount + 1;
         switch (spawnClass) {
             case "worker":
-                citizenMemory = {job: "harvester", class: spawnClass};
+                citizenMemory = {job: "harvester", class: spawnClass, harvestObjectId: null};
                 break;
         }
 
