@@ -1,7 +1,5 @@
 var visualManager = require("visual.manager");
-var jobHarvester = require("job.harvester");
-var jobBuilder = require("job.builder");
-var jobUpgrader = require("job.upgrader");
+var Worker = require("class.worker");
 var BirthController = require("birth.controller");
 
 
@@ -14,13 +12,13 @@ module.exports.loop = function () {
 
         var creep = Game.creeps[creepName];
         if (creep.memory.job == "harvester") {
-            jobHarvester.run(creep);
+            Worker.jobHarvester(creep);
         }
         if (creep.memory.job == "builder") {
-            jobBuilder.run(creep);
+            Worker.jobBuilder(creep);
         }
         if (creep.memory.job == "upgrader") {
-            jobUpgrader.run(creep);
+            Worker.jobUpgrader(creep);
         }
 
     }

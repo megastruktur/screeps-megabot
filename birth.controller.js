@@ -31,7 +31,7 @@ class BirthController {
     }
 
     run() {
-
+        this.population = _(Game.creeps).filter().size();
         if (this.population < this.populationMax) {
             this.spawn(this.spawnCandidate(), Game.spawns[this.mainSpawn]);
         }
@@ -45,13 +45,13 @@ class BirthController {
     spawn(spawnClass, spawn) {
 
         // Set some defaults.
-        if (!Memory.birthAmount) {
-            Memory.birthAmount = 0;
+        if (!Memory[spawnClass].birthAmount) {
+            Memory[spawnClass].birthAmount = Memory[spawnClass].birthAmount;
         }
 
         // Pre-assign citizen memory.
         var citizenMemory;
-        var currentCitizenNumber = Memory.birthAmount + 1;
+        var currentCitizenNumber = Memory[spawnClass].birthAmount + 1;
         switch (spawnClass) {
             case "worker":
                 citizenMemory = {job: "harvester", class: spawnClass};
@@ -68,7 +68,7 @@ class BirthController {
         
                 // Update info on success only!
                 if (result == 0) {
-                    Memory.birthAmount++;
+                    Memory[spawnClass].birthAmount++;
                 }
                 else {
                     console.log("SPAWNER: Can not spawn: " + Codes.errors[result]);
@@ -113,6 +113,7 @@ class BirthController {
                 return spawnClass;
             }
         }
+        return this.availableClasses[0];
     }
 
 }
