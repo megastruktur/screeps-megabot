@@ -1,15 +1,20 @@
-var Utility = {
+class Utility {
 
-    randomGen: function (length) {
-        var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    getTotalEnergy(spawn) {
+
+        var totalEnergyBalance = 0;
+        var extensions = spawn.room.find(FIND_MY_STRUCTURES, {
+            filter: { structureType: STRUCTURE_EXTENSION }
+        });
+        var totalEnergyBalance = 0;
+        for (let i = 0; i < extensions.length; i++) {
+            totalEnergyBalance += extensions[i].energy;
         }
-        return result;
+        totalEnergyBalance += spawn.energy;
+
+        return totalEnergyBalance;
     }
 
 }
 
-module.exports = Utility;
+module.exports = new Utility();

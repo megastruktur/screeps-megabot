@@ -6,10 +6,13 @@ var GarbageCollector = require("garbage.collector");
 var visualManager = require("visual.manager");
 var Worker = require("class.worker");
 var BirthController = require("birth.controller");
+var StructureResourceController = require("structure.resource.controller");
 
 
 module.exports.loop = function () {
     
+    // StructureResourceController.getPositionsAmount();
+
     visualManager.run();
     BirthController.run();
     GarbageCollector.run();

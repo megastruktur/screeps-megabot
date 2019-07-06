@@ -44,7 +44,6 @@ class BirthController {
      */
     spawn(spawnClass, spawn) {
 
-        // Memory[spawnClass].birthAmount = Memory.birthAmount;
         // Set some defaults.
         if (Memory[spawnClass] == undefined) {
             Memory[spawnClass] = {};
@@ -61,7 +60,11 @@ class BirthController {
         }
 
         // Spawn only when not already spawning and have sufficient amount of energy.
-        var energySufficient = (spawn.energy >= this.countBodyPrice(this.bodies[spawnClass]));
+
+        var Utility = require("utility");
+        var totalEnergy = Utility.getTotalEnergy(spawn);
+
+        var energySufficient = (totalEnergy >= this.countBodyPrice(this.bodies[spawnClass]));
         if (spawn.spawning == null) {
 
             if (energySufficient) {
