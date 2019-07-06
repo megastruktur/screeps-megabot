@@ -27,6 +27,29 @@ class Worker {
 
     }
 
+    
+    /**
+     * Harvester is needed in the room.
+     * Return target ID.
+     * @param {Creep} creep
+     **/
+    harvesterNeeded(creep) {
+
+        var targedId = "";
+        var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION ||
+                            structure.structureType == STRUCTURE_SPAWN ||
+                            structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
+                }
+        });
+        
+        if(targets.length > 0) {
+            targedId = targets[0].id;
+        }
+        return targedId;
+    }
+
     /** @param {Creep} creep **/
     jobHarvester(creep) {
 
@@ -41,16 +64,12 @@ class Worker {
             this.goAndHarvest(creep);
         }
         else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION ||
-                                structure.structureType == STRUCTURE_SPAWN ||
-                                structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
-                    }
-            });
-            if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+            // Go return the Energy.
+            var targetId = this.harvesterNeeded(creep);
+            if (targetId != "") {
+                var target = Game.getObjectById(targetId);
+                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
         }
@@ -91,7 +110,9 @@ class Worker {
 
         // Change role if too much energy.
         var spawnName = "Minsk";
-        if (Game.spawns[spawnName].energy < Game.spawns[spawnName].energyCapacity) {
+        
+        var targetId = this.harvesterNeeded(creep);
+        if (targetId != "") {
             creep.memory.job = "harvester";
         }
 
@@ -119,38 +140,38 @@ class Worker {
 	}
 
     /** @param {Creep} creep **/
-    jobChanger(creep) {
+    // jobChanger(creep) {
         
-        // Change role if too much energy.
-        var spawnName = "Minsk";
-        var spawn = Game.spawns[spawnName];
-        var job = "harvester";
-        var activeConstructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
+    //     // Change role if too much energy.
+    //     var spawnName = "Minsk";
+    //     var spawn = Game.spawns[spawnName];
+    //     var job = "harvester";
+    //     var activeConstructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
 
-        if (Game.spawns[spawnName].energy < Game.spawns[spawnName].energyCapacity) {
-            job = "harvester";
-        } else {
+    //     if (Game.spawns[spawnName].energy < Game.spawns[spawnName].energyCapacity) {
+    //         job = "harvester";
+    //     } else {
 
-        }
+    //     }
 
-        // Change Role
-        if(activeConstructionSites.length) {
-            job = "builder";
-        }
+    //     // Change Role
+    //     if(activeConstructionSites.length) {
+    //         job = "builder";
+    //     }
         
 
-        // Change role if too much energy.
-        if (spawn.energy == spawn.energyCapacity) {
-            job = "builder";
-        }
+    //     // Change role if too much energy.
+    //     if (spawn.energy == spawn.energyCapacity) {
+    //         job = "builder";
+    //     }
         
         
-        if(!activeConstructionSites.length) {
-            job = "upgrader";
-        }
+    //     if(!activeConstructionSites.length) {
+    //         job = "upgrader";
+    //     }
 
-        creep.memory.job = job;
-    }
+    //     creep.memory.job = job;
+    // }
 
 }
 
