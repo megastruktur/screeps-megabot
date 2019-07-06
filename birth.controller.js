@@ -6,7 +6,7 @@ class BirthController {
     constructor() {
         this.mainSpawn = "Minsk";
         this.population = _(Game.creeps).filter().size();
-        this.populationMax = 6;
+        this.populationMax = 10;
         this.bodies = {
             worker: [MOVE, MOVE, CARRY, WORK]
         };
@@ -33,9 +33,7 @@ class BirthController {
     run() {
 
         if (this.population < this.populationMax) {
-            for (var spawnClass in this.availableClasses) {
-                this.spawn(this.spawnCandidate(), Game.spawns[this.mainSpawn]);
-            }
+            this.spawn(this.spawnCandidate(), Game.spawns[this.mainSpawn]);
         }
 
     }
@@ -65,11 +63,8 @@ class BirthController {
         if (spawn.spawning == null) {
 
             if (energySufficient) {
-                // var result;
-                // console.log(this.bodies[spawnClass]);
-                // console.log(this.names[spawnClass] + currentCitizenNumber);
-                // console.log({memory: citizenMemory});
-                var result = spawn.spawnCreep(this.bodies[spawnClass], this.names[spawnClass] + currentCitizenNumber,{memory: citizenMemory});
+                var result;
+                result = spawn.spawnCreep(this.bodies[spawnClass], this.names[spawnClass] + currentCitizenNumber,{memory: citizenMemory});
         
                 // Update info on success only!
                 if (result == 0) {
@@ -80,11 +75,11 @@ class BirthController {
                 }
             }
             else {
-                console.log("SPAWNER: Not Enough Energy");
+                // console.log("SPAWNER: Not Enough Energy");
             }
         }
         else {
-            console.log("SPAWNER: already spawning");
+            // console.log("SPAWNER: already spawning");
         }
     }
 
