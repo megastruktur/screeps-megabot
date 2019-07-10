@@ -1,6 +1,24 @@
 class Worker {
 
     /**
+     * Run a worker program.
+     * @param {Creep} creep
+     *
+     **/
+    run(creep) {
+
+        if (creep.memory.job == "harvester") {
+            this.jobHarvester(creep);
+        }
+        if (creep.memory.job == "builder") {
+            this.jobBuilder(creep);
+        }
+        if (creep.memory.job == "upgrader") {
+            this.jobUpgrader(creep);
+        }
+    }
+
+    /**
      * Go and Harvest resource.
      * @param {Creep} creep
      *
