@@ -1,6 +1,6 @@
 class Utility {
 
-    getTotalEnergy(spawn) {
+    getTotalEnergy(spawn, capacity = 'energy') {
 
         var totalEnergyBalance = 0;
         var extensions = spawn.room.find(FIND_MY_STRUCTURES, {
@@ -8,9 +8,9 @@ class Utility {
         });
         var totalEnergyBalance = 0;
         for (let i = 0; i < extensions.length; i++) {
-            totalEnergyBalance += extensions[i].energy;
+            totalEnergyBalance += extensions[i][capacity];
         }
-        totalEnergyBalance += spawn.energy;
+        totalEnergyBalance += spawn[capacity];
 
         return totalEnergyBalance;
     }
