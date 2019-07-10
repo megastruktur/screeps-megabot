@@ -64,15 +64,16 @@ class BirthController {
 
         var Utility = require("utility");
         var totalEnergy = Utility.getTotalEnergy(spawn);
+        var maxEnergy = Utility.getTotalEnergy(spawn, "energyCapacity");
 
-        // Try to spawn enhanced first. If not possible - go with default one.
+        // Try to calculate spawn of enhanced first. If not possible - go with default one.
         var body = this.bodies[spawnClass + "_enhanced"];
-        var energySufficient = (totalEnergy >= this.countBodyPrice(body));
-        if (!energySufficient) {
+        var energyMaxSufficient = (maxEnergy >= this.countBodyPrice(body));
+        if (!energyMaxSufficient) {
             body = this.bodies[spawnClass];
-            energySufficient = (totalEnergy >= this.countBodyPrice(body));
         }
         
+        var energySufficient = (totalEnergy >= this.countBodyPrice(body));
         if (spawn.spawning == null) {
 
             if (energySufficient) {
