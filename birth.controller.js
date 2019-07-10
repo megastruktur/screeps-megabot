@@ -6,7 +6,7 @@ class BirthController {
     constructor() {
         this.mainSpawn = "Minsk";
         this.population = _(Game.creeps).filter().size();
-        this.populationMax = 12;
+        this.populationMax = 10;
         this.bodies = {
             worker: [MOVE, CARRY, WORK],
             worker_enhanced: [MOVE, MOVE, CARRY, CARRY, WORK, WORK]

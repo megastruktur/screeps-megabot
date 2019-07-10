@@ -35,7 +35,7 @@ class Worker {
         else {
             var harvestSource = Game.getObjectById(creep.memory.harvestObjectId)
         }
-        if(creep.harvest(harvestSource) == ERR_NOT_IN_RANGE) {
+        if (creep.harvest(harvestSource) == ERR_NOT_IN_RANGE) {
             creep.moveTo(harvestSource, {
                 visualizePathStyle: {
                     stroke: '#fff'
@@ -74,8 +74,13 @@ class Worker {
         var spawnName = "Minsk";
 
         // Change role if too much energy.
-        if (Game.spawns[spawnName].energy == Game.spawns[spawnName].energyCapacity) {
+        var Utility = require("utility");
+        var totalEnergy = Utility.getTotalEnergy(Game.spawns["Minsk"]);
+        var maxEnergy = Utility.getTotalEnergy(Game.spawns["Minsk"], "energyCapacity");
+
+        if (totalEnergy == maxEnergy) {
             creep.memory.job = "builder";
+            return;
         }
 
 	    if(creep.carry.energy < creep.carryCapacity) {
@@ -100,6 +105,8 @@ class Worker {
         var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
         if(!targets.length) {
             creep.memory.job = "upgrader";
+            creep.memory.building = false;
+            return;
         }
 
 	    if(creep.memory.building && creep.carry.energy == 0) {
@@ -132,12 +139,16 @@ class Worker {
         var targetId = this.harvesterNeeded(creep);
         if (targetId != "") {
             creep.memory.job = "harvester";
+            creep.memory.upgrading = false;
+            return;
         }
 
         // Change Role
         var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
         if(targets.length) {
             creep.memory.job = "builder";
+            creep.memory.upgrading = false;
+            return;
         }
 
         if(creep.memory.upgrading && creep.carry.energy == 0) {
