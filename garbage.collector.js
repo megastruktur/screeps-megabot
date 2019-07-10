@@ -11,6 +11,7 @@ class GarbageCollector {
         }
 
         if (Game.time >= Memory.cacheCleared + this.cacheClearTimeout) {
+            Memory.cacheCleared = Game.time;
             this.clearCache();
         }
     }
