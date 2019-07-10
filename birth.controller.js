@@ -8,7 +8,8 @@ class BirthController {
         this.population = _(Game.creeps).filter().size();
         this.populationMax = 12;
         this.bodies = {
-            worker: [MOVE, MOVE, CARRY, CARRY, WORK, WORK]
+            worker: [MOVE, CARRY, WORK],
+            worker_enhanced: [MOVE, MOVE, CARRY, CARRY, WORK, WORK]
         };
         this.names = {
             worker: "HappyWorker"
@@ -64,12 +65,19 @@ class BirthController {
         var Utility = require("utility");
         var totalEnergy = Utility.getTotalEnergy(spawn);
 
-        var energySufficient = (totalEnergy >= this.countBodyPrice(this.bodies[spawnClass]));
+        // Try to spawn enhanced first. If not possible - go with default one.
+        var body = this.bodies[spawnClass + "_enhanced"];
+        var energySufficient = (totalEnergy >= this.countBodyPrice(body));
+        if (!energySufficient) {
+            body = this.bodies[spawnClass];
+            energySufficient = (totalEnergy >= this.countBodyPrice(body));
+        }
+        
         if (spawn.spawning == null) {
 
             if (energySufficient) {
                 var result;
-                result = spawn.spawnCreep(this.bodies[spawnClass], this.names[spawnClass] + currentCitizenNumber,{memory: citizenMemory});
+                result = spawn.spawnCreep(body, this.names[spawnClass] + currentCitizenNumber,{memory: citizenMemory});
         
                 // Update info on success only!
                 if (result == 0) {
